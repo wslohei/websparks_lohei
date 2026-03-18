@@ -8,7 +8,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -18,10 +19,12 @@ jobs:
           aws-region: ap-southeast-1
 
       - name: Deploy to S3
+        id: s3_deploy
         run: |
           aws s3 sync . s3://lohei.sg --delete --exclude ".git/*" --exclude ".github/*"
 
       - name: Purge Cloudflare cache
+        if: steps.s3_deploy.outcome == 'success'
         uses: jakejarvis/cloudflare-purge-action@v0.3.0
         env:
           # Note: This action uses 'env:', not 'with:'
