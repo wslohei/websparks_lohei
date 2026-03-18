@@ -22,7 +22,7 @@ jobs:
           aws s3 sync . s3://lohei.sg --delete --exclude ".git/*" --exclude ".github/*"
 
       - name: Purge Cloudflare Cache
-        uses: n0pI/cloudflare-purge-action@v2
+        uses: Cyb3r-Jak3/action-cloudflare-cache
         with:
           zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
